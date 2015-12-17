@@ -99,13 +99,8 @@ ifeq (yes,$(RUN_TESTS))
   MYSQL_SOCKET ?= $(MYSQL_DATA_DIR)/mysql.sock
 endif
 
-ifeq (linux,$(DEB_HOST_ARCH_OS))
-  CONFIGURE_SYSTEMD := --with-fpm-systemd
-  DH_SYSTEMD        := --with systemd
-else
-  CONFIGURE_SYSTEMD := --without-fpm-systemd
-  DH_SYSTEMD        :=
-endif
+cONFIGURE_SYSTEMD := --without-fpm-systemd
+DH_SYSTEMD        :=
 
 ifeq ($(DEB_HOST_ARCH),$(filter $(DEB_HOST_ARCH),amd64 armel armhf i386 ia64 powerpc))
   CONFIGURE_DTRACE_ARGS := --enable-dtrace
@@ -279,7 +274,7 @@ $(info Enabled extensions $(ext_EXTENSIONS))
 $(info Enabled config $(ext_config))
 
 %:
-	dh $@ $(DH_SYSTEMD) --with apache2 --parallel
+	dh $@ $(DH_SYSTEMD) --parallel
 
 PREPARE_FILES := $(addprefix debian/,$(shell cat debian/prepare-files))
 
